@@ -16,7 +16,8 @@ setup(
     install_requires=[
         'tensorflow_hub>=0.6.0',
         'tensorflow>=2.0.0',
-        'tensorflow_text>=2.0.0rc0',
+        'tensorflow_text',
+        'pandas',
         'keras'
     ]
 )
