@@ -1,3 +1,11 @@
+"""
+If using this in colab, use:
+    !pip install tensorflow_text
+    !pip install pandas
+    !pip install keras
+to install needed dependencies.
+"""
+
 import urllib.request
 import os
 import zipfile
@@ -14,7 +22,7 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 dump_dir = os.path.join(dir_path, "dumpdata")
 data_dir = os.path.join(dir_path, "data")
 download_filename = os.path.join(data_dir,"trainingandtestdata.zip")
-tf_cache_dir = data_dir + "pretrained_model"
+tf_cache_dir = os.path.join(data_dir, "pretrained_model")
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 os.environ['TFHUB_CACHE_DIR'] = tf_cache_dir
