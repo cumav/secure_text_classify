@@ -1,4 +1,4 @@
-# Secure auto spam classifier
+# Secure text analysis
 
 This project aims to create a privacy focused spam classifier. For this, the following steps are planned:
 
@@ -15,3 +15,8 @@ Install package in development mode:
 
 ``pip install -e .``
 
+Using TensorBoard:
+
+* Search for the logdir. Here its "./logs".
+
+``tensorboard --logdir=./logs``

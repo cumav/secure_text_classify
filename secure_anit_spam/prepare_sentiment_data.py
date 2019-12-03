@@ -62,7 +62,6 @@ random.shuffle(dict_data)
 
 steps = 2000
 for num in range(0, len(dict_data), steps):
-  print(num)
 
   text = [x["text"] for x in dict_data[num: num+steps]]
   categories = [x["category"] for x in dict_data[num: num+steps]]
