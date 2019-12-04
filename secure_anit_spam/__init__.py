@@ -1,1 +1,1 @@
-from secure_anit_spam import train
+from secure_anit_spam import train_sentiment

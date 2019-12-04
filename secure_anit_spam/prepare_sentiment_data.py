@@ -13,6 +13,7 @@ import random
 
 import tensorflow_hub as hub
 import tensorflow as tf
+
 tf.sysconfig.get_link_flags()
 import pandas as pd
 import tensorflow_text
@@ -21,7 +22,7 @@ import pickle
 dir_path = os.path.dirname(os.path.realpath(__file__))
 dump_dir = os.path.join(dir_path, "dumpdata")
 data_dir = os.path.join(dir_path, "data")
-download_filename = os.path.join(data_dir,"trainingandtestdata.zip")
+download_filename = os.path.join(data_dir, "trainingandtestdata.zip")
 tf_cache_dir = os.path.join(data_dir, "pretrained_model")
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
@@ -40,7 +41,6 @@ urllib.request.urlretrieve(data_url, download_filename)
 print("Extracting dataset ...")
 with zipfile.ZipFile(download_filename, 'r') as zip_ref:
     zip_ref.extractall(data_dir)
-
 
 # Start creating embeddings
 data = pd.read_csv(os.path.join(data_dir, "training.1600000.processed.noemoticon.csv"), header=None, encoding='latin-1')
@@ -63,16 +63,17 @@ random.shuffle(dict_data)
 steps = 2000
 for num in range(0, len(dict_data), steps):
 
-  text = [x["text"] for x in dict_data[num: num+steps]]
-  categories = [x["category"] for x in dict_data[num: num+steps]]
-  sentiment_id = [x["id"] for x in dict_data[num: num+steps]]
+    text = [x["text"] for x in dict_data[num: num + steps]]
+    categories = [x["category"] for x in dict_data[num: num + steps]]
+    sentiment_id = [x["id"] for x in dict_data[num: num + steps]]
 
-  en_result = embed(text)["outputs"]
-  print("writing to file")
+    en_result = embed(text)["outputs"]
+    print("writing to file")
 
-  list_of_data = []
-  out_data = en_result.numpy()
-  for i in range(len(out_data)):
-    temp = {'id': sentiment_id[i], 'embedding': out_data[i], 'category': categories[i]}
-    list_of_data.append(temp)
-  pickle.dump(list_of_data, open( os.path.join(dump_dir, "{}.p".format(num)), "wb"))
+    list_of_data = []
+    out_data = en_result.numpy()
+    for i in range(len(out_data)):
+        # TODO: change id to raw text. ID is not used
+        temp = {'id': sentiment_id[i], 'embedding': out_data[i], 'category': categories[i]}
+        list_of_data.append(temp)
+    pickle.dump(list_of_data, open(os.path.join(dump_dir, "{}.p".format(num)), "wb"))
