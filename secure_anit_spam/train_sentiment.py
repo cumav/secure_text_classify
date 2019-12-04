@@ -6,6 +6,7 @@ import glob
 from keras import Sequential
 from keras.layers import Dense, Dropout
 from keras.callbacks import TensorBoard
+from keras.models import load_model
 import numpy as np
 
 from datetime import datetime
@@ -92,7 +93,6 @@ class Train:
         Check if model can be loaded and print the accuracy of the model using all data
         :param best_model: model to check functionality for.
         """
-        from keras.models import load_model
 
         data = self.load_pickle_data(self.dumpdata_dir)
         embeddings = np.array([x["embedding"] for x in data])
@@ -111,27 +111,41 @@ class Train:
 
         print(right_pred / len(labels))
 
+    def train_on_ranges(self, dropouts, nodes):
+        """
+        Will iter over stated dropouts and nodes and will return the best model
+        :param dropouts: Array of dropouts
+        :param nodes: Array where each item represents the number of nodes the hidden layer has
+        :return: best model name
+        """
+
+        model_stats = {}
+
+        for node_count in nodes:
+            for dropout in dropouts:
+                print("\nTraining model with dropout of: {} and with a "
+                      "number of nodes of: {}\n".format(dropout, node_count))
+                model_name, model_val_accuracy = self.train_and_saved(num_nodes=node_count, dropout=dropout, epochs=1)
+                model_stats[model_name] = model_val_accuracy
+
+        sorted_stats = sorted(model_stats.items(), key=operator.itemgetter(1))
+
+        for val, item in enumerate(sorted_stats):
+            print("{}. place is model '{}' with an accuracy of: {}\n".format(val, item[0], item[1]))
+
+        # TODO: continue retrain the exiting model
+        best_model = os.path.join(self.models_dir, "{}.h5".format(sorted_stats[-1][0]))
+        model = load_model(best_model)
+        # TODO: Fit here
+
 
 def main():
-    dropouts = [0.2, 0.3, 0.4, 0.6]
-    nodes = [12, 32, 64, 128]
-
-    model_stats = {}
-
-    trainer = Train()
-
-    for node_count in nodes:
-        for dropout in dropouts:
-            print("\nTraining model with dropout of: {} and with a "
-                  "number of nodes of: {}\n".format(dropout, node_count))
-            trainer.make_model(num_nodes=node_count, dropout=dropout)
-            model_name, model_val_accuracy = trainer.train_and_saved()
-            model_stats[model_name] = model_val_accuracy
-
-    sorted_stats = sorted(model_stats.items(), key=operator.itemgetter(1))
-
-    for val, item in enumerate(sorted_stats):
-        print("{}. place is model '{}' with an accuracy of: {}\n".format(val, item[0], item[1]))
+    # dropout = [0.2, 0.3, 0.4, 0.6]
+    # nodes = [12, 32, 64, 128]
+    dropout = [0.2]
+    nodes = [12, 32]
+    x = Train()
+    x.train_on_ranges(dropout, nodes)
 
 
 if __name__ == "__main__":
