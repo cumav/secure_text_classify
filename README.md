@@ -12,7 +12,16 @@ This project aims to create a privacy focused text analysis tool. For this, the 
 - Run the classifyer model in the cloud.
 
 ![Process](media/process.svg)
+
 ### Dev setup:
+
+As of today, pip has to be on the latest version for everything to work corectly:
+
+``pip install -U pip``
+
+Keep in mind that becuase the module ``tensorflow_text``, this project does 
+not work on Windows.
+
 Setup venv:
 
 ```pip -m venv env```
@@ -25,4 +34,4 @@ Using TensorBoard:
 
 * Search for the logdir. Here its "./logs".
 
-``tensorboard --logdir=./logs``
+`tensorboard --logdir=./logs``
