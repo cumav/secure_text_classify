@@ -13,7 +13,6 @@ import random
 
 import tensorflow_hub as hub
 import tensorflow as tf
-
 tf.sysconfig.get_link_flags()
 import pandas as pd
 import tensorflow_text
@@ -34,13 +33,14 @@ for path in [dump_dir, data_dir]:
         os.mkdir(path)
         print("Created directory {} ...".format(path))
 
-data_url = "http://cs.stanford.edu/people/alecmgo/trainingandtestdata.zip"
-print("Downloading dataset ...")
-urllib.request.urlretrieve(data_url, download_filename)
+if not os.path.exists(download_filename):
+    data_url = "http://cs.stanford.edu/people/alecmgo/trainingandtestdata.zip"
+    print("Downloading dataset ...")
+    urllib.request.urlretrieve(data_url, download_filename)
 
-print("Extracting dataset ...")
-with zipfile.ZipFile(download_filename, 'r') as zip_ref:
-    zip_ref.extractall(data_dir)
+    print("Extracting dataset ...")
+    with zipfile.ZipFile(download_filename, 'r') as zip_ref:
+        zip_ref.extractall(data_dir)
 
 # Start creating embeddings
 data = pd.read_csv(os.path.join(data_dir, "training.1600000.processed.noemoticon.csv"), header=None, encoding='latin-1')
@@ -73,7 +73,7 @@ for num in range(0, len(dict_data), steps):
     list_of_data = []
     out_data = en_result.numpy()
     for i in range(len(out_data)):
-        # TODO: change id to raw text. ID is not used
-        temp = {'id': sentiment_id[i], 'embedding': out_data[i], 'category': categories[i]}
+        # TODO: Check if its usefull to pass the id. Else remove the list comp. for the id
+        temp = {'text': text[i], 'embedding': out_data[i], 'category': categories[i]}
         list_of_data.append(temp)
     pickle.dump(list_of_data, open(os.path.join(dump_dir, "{}.p".format(num)), "wb"))
