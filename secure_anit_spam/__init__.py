@@ -1,1 +1,0 @@
-from secure_anit_spam import train_sentiment

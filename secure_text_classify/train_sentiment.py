@@ -13,11 +13,11 @@ from datetime import datetime
 
 
 class Train:
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-    models_dir = os.path.join(dir_path, "models")
-    dumpdata_dir = os.path.join(dir_path, "dumpdata")
 
-    def __init__(self):
+    def __init__(self, dir_path=os.path.dirname(os.path.realpath(__file__))):
+        self.dir_path = dir_path
+        self.models_dir = os.path.join(self.dir_path, "models")
+        self.dumpdata_dir = os.path.join(self.dir_path, "dumpdata")
 
         if not os.path.exists(self.models_dir):
             os.makedirs(self.models_dir)
@@ -138,12 +138,14 @@ class Train:
         model = load_model(best_model)
         # TODO: Fit here
 
+    def prepare_data(self):
+        from secure_text_classify.prepare_sentiment_data import prepare_sentiment_data
+        prepare_sentiment_data(dir_path=self.dir_path)
 
 def main():
-    # dropout = [0.2, 0.3, 0.4, 0.6]
-    # nodes = [12, 32, 64, 128]
-    dropout = [0.2]
-    nodes = [12, 32]
+    prepare_data()
+    dropout = [0.2, 0.3, 0.4, 0.6]
+    nodes = [12, 32, 64, 128]
     x = Train()
     x.train_on_ranges(dropout, nodes)
 

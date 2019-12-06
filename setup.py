@@ -4,7 +4,7 @@ with open("README.md") as readme:
     long_description = readme.read()
 
 setup(
-    name='secure_anit_spam',
+    name='secure_text_classify',
     version='0.0.1',
     description='Language processing api tools',
     long_description=long_description,
@@ -12,7 +12,7 @@ setup(
     author='Marvin Gurka',
     author_email='genmethat@gmail.com',
     url='https://genmethat.com',
-    packages=['secure_anit_spam'],
+    packages=['secure_text_classify'],
     install_requires=[
         'tensorflow_hub>=0.6.0',
         'tensorflow>=2.0.0',
