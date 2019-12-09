@@ -25,10 +25,10 @@ def prepare_sentiment_data(gpu=False, dir_path=os.path.dirname(os.path.realpath(
     data_dir = os.path.join(dir_path, "data")
     download_filename = os.path.join(data_dir, "trainingandtestdata.zip")
     tf_cache_dir = os.path.join(data_dir, "pretrained_model")
-
-    if gpu:
+    os.environ['TFHUB_CACHE_DIR'] = tf_cache_dir
+    
+    if not gpu:
         os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
-        os.environ['TFHUB_CACHE_DIR'] = tf_cache_dir
 
     # Creating path if directories do not exist
     for path in [dump_dir, data_dir]:
