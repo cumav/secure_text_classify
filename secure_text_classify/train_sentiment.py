@@ -43,7 +43,7 @@ class Train:
         """
         all_data = []
 
-        for item in glob.glob("{}\*".format(folder)):
+        for item in glob.glob(os.path.join(folder, "*")):
             temp_data = pickle.load(open(item, "rb"))
             all_data += temp_data
         return all_data
@@ -125,7 +125,7 @@ class Train:
             for dropout in dropouts:
                 print("\nTraining model with dropout of: {} and with a "
                       "number of nodes of: {}\n".format(dropout, node_count))
-                model_name, model_val_accuracy = self.train_and_saved(num_nodes=node_count, dropout=dropout, epochs=1)
+                model_name, model_val_accuracy = self.train_and_saved(num_nodes=node_count, dropout=dropout, epochs=15)
                 model_stats[model_name] = model_val_accuracy
 
         sorted_stats = sorted(model_stats.items(), key=operator.itemgetter(1))
@@ -139,14 +139,18 @@ class Train:
         # TODO: Fit here
 
     def prepare_data(self):
+        """
+        Generates training data for the sentiment classifier
+        """
         from secure_text_classify.prepare_sentiment_data import prepare_sentiment_data
         prepare_sentiment_data(dir_path=self.dir_path)
 
+
 def main():
-    prepare_data()
     dropout = [0.2, 0.3, 0.4, 0.6]
     nodes = [12, 32, 64, 128]
     x = Train()
+    x.prepare_data()
     x.train_on_ranges(dropout, nodes)
 
 

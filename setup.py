@@ -19,6 +19,7 @@ setup(
         'tensorflow_text',
         'pandas',
         'numpy',
-        'keras'
+        'keras',
+        'flask'
     ]
 )

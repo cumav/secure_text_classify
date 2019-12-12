@@ -11,12 +11,10 @@ import os
 import zipfile
 import random
 
-import tensorflow_hub as hub
-import tensorflow as tf
-tf.sysconfig.get_link_flags()
 import pandas as pd
-import tensorflow_text
 import pickle
+
+from secure_text_classify.utils import load_tf_hub_model
 
 
 def prepare_sentiment_data(gpu=False, dir_path=os.path.dirname(os.path.realpath(__file__))):
@@ -26,7 +24,7 @@ def prepare_sentiment_data(gpu=False, dir_path=os.path.dirname(os.path.realpath(
     download_filename = os.path.join(data_dir, "trainingandtestdata.zip")
     tf_cache_dir = os.path.join(data_dir, "pretrained_model")
     os.environ['TFHUB_CACHE_DIR'] = tf_cache_dir
-    
+
     if not gpu:
         os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
@@ -51,7 +49,7 @@ def prepare_sentiment_data(gpu=False, dir_path=os.path.dirname(os.path.realpath(
     data.columns = ["category", "text"]
 
     print("Loading model. If this is the first time running this script, this may take some time ...")
-    embed = hub.load("https://tfhub.dev/google/universal-sentence-encoder-multilingual-large/2")
+    embed = load_tf_hub_model()
 
     # Compute embeddings.
     dict_data = data.to_dict('records')
@@ -63,7 +61,7 @@ def prepare_sentiment_data(gpu=False, dir_path=os.path.dirname(os.path.realpath(
     print("shuffeling")
     random.shuffle(dict_data)
 
-    steps = 2000
+    steps = 1000
     for num in range(0, len(dict_data), steps):
 
         text = [x["text"] for x in dict_data[num: num + steps]]
