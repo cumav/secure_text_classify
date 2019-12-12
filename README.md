@@ -34,4 +34,43 @@ Using TensorBoard:
 
 * Search for the logdir. Here its "./logs".
 
-`tensorboard --logdir=./logs``
+``tensorboard --logdir=./logs``
+
+### Example use:
+
+Load training data and train a models on multiple parameters:
+
+
+```python
+from secure_text_classify import train_sentiment
+import os
+
+# Initialize Trainer
+x = train_sentiment.Train(os.path.dirname(os.path.realpath(__file__)))
+# Downloads and prepares data
+x.prepare_data()
+
+# Create multiple models with different dropouts and nodes
+dropout = [0.2, 0.3, 0.4, 0.6]
+nodes = [12, 32, 64, 128]
+x.train_on_ranges(dropout, nodes)
+```
+
+After training the models select the best one, then you can 
+use it to create a simple API:
+```python 
+from secure_text_classify import serve
+import os
+
+# "20191212-145717_nodes-128_dropout-0.3.h5" is the model with the best validation accuracy
+serve.serve(os.path.dirname(os.path.realpath(__file__)), "20191212-145717_nodes-128_dropout-0.3.h5")
+```
+
+Now you can POST sentences to ``localhost:5000``:
+
+```JSON
+{
+	"text": "This is fun!"
+}
+```
+It will return a float value where 1 is a very positive sentiment and 0 is a negative sentiment.  
