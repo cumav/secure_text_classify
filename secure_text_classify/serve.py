@@ -41,4 +41,4 @@ def serve(cache_dir, sentiment_model_name):
     model_path = os.path.join(cache_dir, "models", sentiment_model_name)
     sentiment_model = load_model(model_path)
 
-    app.run(threaded=False)
+    app.run(host='0.0.0.0', threaded=False)
