@@ -20,6 +20,7 @@ setup(
         'pandas',
         'numpy',
         'keras',
-        'flask'
+        'flask',
+        'flask-cors'
     ]
 )

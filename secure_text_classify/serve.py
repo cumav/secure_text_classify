@@ -2,13 +2,13 @@ import json
 import os
 
 from flask import Flask, request
-import numpy as np
+from flask_cors import CORS
 from keras.models import load_model
 
 from secure_text_classify.utils import load_tf_hub_model
 
 app = Flask(__name__)
-
+CORS(app)
 
 @app.route('/', methods=['GET', 'POST'])
 def predict():
