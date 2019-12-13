@@ -44,7 +44,7 @@ def serve(cache_dir, sentiment_model_name):
     model_path = os.path.join(cache_dir, "models", sentiment_model_name)
     sentiment_model = load_model(model_path)
 
-    app.run(threaded=False)
+    app.run(host='0.0.0.0', threaded=False)
 
 if __name__ == "__main__":
     serve("/home/pc/Desktop/train_model", "20191212-145717_nodes-128_dropout-0.3.h5")
