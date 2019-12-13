@@ -21,6 +21,7 @@ setup(
         'numpy',
         'keras',
         'flask',
-        'flask-cors'
+        'flask-cors',
+        'nltk'
     ]
 )
