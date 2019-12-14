@@ -50,4 +50,4 @@ if __name__ == "__main__":
     :sentiment_model_name: Name of the model
     """
 
-    app.run(host='0.0.0.0', threaded=False, port=500)
+    app.run(host='0.0.0.0', threaded=False, port=80)
