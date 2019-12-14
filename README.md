@@ -73,4 +73,37 @@ Now you can POST sentences to ``localhost:5000``:
 	"text": "This is fun!"
 }
 ```
-It will return a float value where 1 is a very positive sentiment and 0 is a negative sentiment.  
+It will return a float value where 1 is a very positive sentiment and 0 is a negative sentiment. 
+
+## Dockerization of the application
+
+The dockerfiles are based on [tiangolo's](https://github.com/tiangolo) docker images
+containing nginx, uwsgi and flask. The Dockerfiles had to be modified, to support tensorflow.
+
+To generate the base image ``cd`` into the folder ``docker-tensorflow``:
+
+``cd docker-tensorflow``
+
+Then start building the image by running:
+
+``docker build .``
+
+After the image has been build, select the image id and tag it:
+
+``docker tag <image-id> tensorflow/nginx:latest``
+
+To find the image-id type ``docker images`` it should be the latest one.
+
+Now cd back into this projects directory and build the image:
+
+``cd ../``
+
+``docker build .``
+
+When finished building, select the image-id (not "tensorflow/nginx:latest") and run a container:
+
+```docker container run --publish 80:80 <image-id>```
+
+or to run it in the background:
+
+``docker container run --publish 80:80 detached <image-id>``
