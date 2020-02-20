@@ -4,6 +4,7 @@ WORKDIR /code
 COPY . /code
 RUN pip3 install -U pip
 RUN pip3 install -e .
+EXPOSE 80 443
 LABEL maintainer="Sebastian Ramirez <tiangolo@gmail.com>"
 
 
