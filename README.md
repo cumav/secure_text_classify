@@ -3,7 +3,7 @@
 This project aims to create a privacy focused text analysis tool, without exposing classification models to the end user.
 For this we use so called embeddings. 
 Embeddings are a vector representation of words, sentences or phrases. You can still extract information 
-out of them, though the exact information of the text gets lost. This is where the privacy factor comes in. We can use
+out of them, though the exact information of the text is lost. This is where the privacy factor comes in. We can use
 the embeddings as a numerical 'summary' (in this case 520 floats) of the text, which is not backtrackable. 
 The embeddings only represent the most basic information of a given text (like topics), which we can then safely send to a 
 backend server.
